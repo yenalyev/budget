@@ -34,23 +34,7 @@ public class SpendingUI extends JPanel {
     private JComboBox editComboCategory;
     private JComboBox comboCase;
     
-    private JComboBox addJComboBox(){
-    ComboBox combo = new ComboBox();
-    String[] sourceForComboCategory = combo.getDistinctFromSpendingWithFriquency("spend_cat");
-    editComboCategory = new JComboBox(sourceForComboCategory);
-    editComboCategory.setEditable(true);
-    editComboCategory.setAlignmentX(LEFT_ALIGNMENT);
     
-    editComboCategory.addActionListener(new ActionListener(){
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String strToTextField = (String) editComboCategory.getSelectedItem();
-            spend_catField.setText(strToTextField);
-        }});
-    
-    return editComboCategory;
-    
-    }
     
     
     
@@ -169,12 +153,29 @@ public class SpendingUI extends JPanel {
     return (spend_nameField.getText().trim().isEmpty() && spend_sumField.getText().trim().isEmpty());
     }   
     
+    private JComboBox addJComboBox(){
+    ComboBox combo = new ComboBox();
+    String[] sourceForComboCategory = combo.getDistinctFromSpendingWithFriquency("spend_cat");
+    editComboCategory = new JComboBox(sourceForComboCategory);
+    editComboCategory.setEditable(true);
+    editComboCategory.setAlignmentX(LEFT_ALIGNMENT);
+    
+    editComboCategory.addActionListener(new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String strToTextField = (String) editComboCategory.getSelectedItem();
+            spend_catField.setText(strToTextField);
+        }});
+    
+    return editComboCategory;
+    
+    }
     private JPanel getCategoryView(){
         JPanel categoryContainer = new JPanel();
         categoryContainer.setVisible(true);
         comboCase = addJComboBox();
         if (categoryVisibleFlag){
-        categoryContainer.add( spend_catField);
+        categoryContainer.add(spend_catField);
         
         } else {
         categoryContainer.add(comboCase);
@@ -197,9 +198,13 @@ public class SpendingUI extends JPanel {
                         return;
                     }
                     if (bean.create(s) != null){
-                        
-                        SpendingUI.this.spend_catField.setVisible(true);
-                        SpendingUI.this.comboCase.setVisible(false);
+                        SpendingUI.this.categoryVisibleFlag = true;
+                    JPanel catPanel = getCategoryView();
+                    
+                    SpendingUI.this.spend_catField.setVisible(true);
+                    SpendingUI.this.comboCase.setVisible(false);
+                    SpendingUI.this.catPanel.removeAll();
+                    SpendingUI.this.catPanel.add(catPanel, "wrap");
                         JOptionPane.showMessageDialog(null, "New spending was created successfully");
                         createButton.setText("New");
                         break;
@@ -211,6 +216,7 @@ public class SpendingUI extends JPanel {
                     
                     SpendingUI.this.spend_catField.setVisible(false);
                     SpendingUI.this.comboCase.setVisible(true);
+                    SpendingUI.this.catPanel.removeAll();
                     SpendingUI.this.catPanel.add(catPanel, "wrap");
                     java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
                     
