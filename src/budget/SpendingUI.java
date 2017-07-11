@@ -202,7 +202,6 @@ public class SpendingUI extends JPanel {
                     JPanel catPanel = getCategoryView();
                     
                     SpendingUI.this.spend_catField.setVisible(true);
-                    SpendingUI.this.comboCase.setVisible(false);
                     SpendingUI.this.catPanel.removeAll();
                     SpendingUI.this.catPanel.add(catPanel, "wrap");
                         JOptionPane.showMessageDialog(null, "New spending was created successfully");
