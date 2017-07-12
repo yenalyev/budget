@@ -75,7 +75,7 @@ public class ReportBean {
         Double totalAll = 0.0;
         ComboBox combo = new ComboBox();
         final String COLUMNNAME = "spend_cat";
-        String [] sortCategoryByFriequency = combo.getDistinctFromSpendingWithFriquency(COLUMNNAME);
+        String [] sortCategoryByFriequency = combo.getDistinctFromRangeSpendingWithFriquency(COLUMNNAME, startDate, endDate);
         for(String s : sortCategoryByFriequency){
         Double total = 0.0;
         String query = "SELECT * FROM spending WHERE (spend_date BETWEEN '" + startDate +"' AND '" + endDate +
@@ -89,7 +89,7 @@ public class ReportBean {
         String name = rowSet.getString(2);
         Double sum = rowSet.getDouble(3);
         total = total + sum;
-        totalAll = totalAll + total;
+        totalAll = totalAll + sum;
         String category = rowSet.getString(4);
         java.sql.Date date = rowSet.getDate(5);
         String addinfo = rowSet.getString(6);
@@ -108,7 +108,9 @@ public class ReportBean {
     }
     //return null;
     }
-        return resultQueryList;
+    Spending totalRow = new Spending("TOTAL SPENDING", totalAll);
+    resultQueryList.add(totalRow);
+    return resultQueryList;
         }
     
     
